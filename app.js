@@ -66,6 +66,32 @@ function roomUpdate(delRoom = "") {
 io.on("connection", (socket) => {
   console.log("a user connected");
 
+
+  // 창 새로고침하거나 창 닫아서 socket이 disconnect됐을 때 rooms array update & 채팅방에 notify msg 남김
+  // -> "notify-message"를 sockets.in(socket.roomname).emit
+  //    "rooms-update"를 broadcast.emit
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+    if (getRoomByName(socket.roomname).memNum == 1)
+      // 내가 이 방의 마지막 남은 1명인데 내가 disconnect된 경우
+      roomUpdate(socket.roomname); // 해당 room 삭제
+    else {
+      // 채팅방에 msg남기고 전체 rooms array update
+      // 아직 listener 없음
+      // io.sockets
+      //   .in(socket.roomname)
+      //   .emit("notify-message", `${socket.nickname} left this room.`);
+      roomUpdate();
+    }
+
+    // lobby의 room list 갱신 위함
+    // socket.broadcast.emit("rooms-update",rooms)
+    // rooms는 전체 active한 rooms array
+    socket.broadcast.emit("rooms-update", rooms);
+  });
+
+
+
   // 로그인 (중복 닉네임 들어올 시 거부) -> "login"을 listen하고 "login-result"를 emit
   // socket.emit("login",data)에 대한 listener
   // data = {nickname, img}

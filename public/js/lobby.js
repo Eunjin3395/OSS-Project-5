@@ -120,7 +120,7 @@ function lobby_roomUpdate(rooms) {
 }
 
 
-
+// 이 부분은 chattingPage 구현되면 그쪽으로 옮겨야함
 socket.on("rooms-update",(rooms)=>{
   console.log("room update called");
 
