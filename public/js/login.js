@@ -29,7 +29,7 @@ function checkAvatar(){
 
 // 로그인 시도 -> "login"을 emit
 // socket.emit("login",data)
-// data = {nickname,avatar}
+// data = {nickname,img}
 var loginForm = document.getElementById('loginForm');
 var nicknameInput = document.getElementById('nickname');
 loginForm.addEventListener('submit', function(e) {
@@ -39,7 +39,7 @@ loginForm.addEventListener('submit', function(e) {
     if(val!="X"){
       socket.emit('login',{
         nickname:nicknameInput.value,
-        avatar:val        
+        img:val        
       })
     }else{ // avatar를 선택하지 않고 submit 누른 경우
       alert("Select Avatar")
@@ -52,7 +52,7 @@ loginForm.addEventListener('submit', function(e) {
 
 // 서버로부터 로그인 결과 받음 -> "login-result"를 listen하고 lobbyArea 보여주기 및 currentArea 변경
 // socket.emit("login-result",data)에 대한 listener
-// data = {result: true/false, msg, rooms,nickname,img}
+// data = {result: true/false, msg, rooms,name,img}
 socket.on('login-result',(data)=>{
   if(!data.result) //로그인 실패
     alert(data.msg);
@@ -63,7 +63,7 @@ socket.on('login-result',(data)=>{
     document.getElementById('lobbyArea').className=""
     currentArea="lobby"
 
-    loginInfo=data // client단에서 자신의 nickname과 img 접근하게 하기위함
+    loginInfo={name:data.name, img:data.img} // client단에서 자신의 nickname과 img 접근하게 하기위함
 
     // lobby의 active한 room list update
     // lobby_roomUpdate(data.rooms)
