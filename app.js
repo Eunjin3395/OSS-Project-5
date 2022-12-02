@@ -24,35 +24,19 @@ io.on("connection", (socket) => {
 
   // 로그인 (중복 닉네임 들어올 시 거부) -> "login"을 listen하고 "login-result"를 emit
   // socket.emit("login",data)에 대한 listener
-  // data = {nickname, avatar}
+  // data = {nickname, img}
   // front\src\components\views\LoginPage.js
   socket.on("login", async (data) => {
-    if (typeof data !== "object") {
-      try {
-        var ticket = await client.verifyIdToken({
-          idToken: data,
-          audience: process.env["GOOGLE_CLIENT_ID"],
-        });
-        var payload = ticket.getPayload();
-        var name = payload["name"];
-        var picture = payload["picture"];
-      } catch (err) {
-        console.error(err);
-      }
-      data = {
-        nickname: name,
-        avatar: picture,
-      };
-    }
-
     console.log("data: " + JSON.stringify(data));
     let resultData = {
       result: false,
       msg: "",
       name: "",
       rooms: [],
+      img:""
     };
-    // login result event에 넘겨줄 data, rooms는 lobby에서 active room list를 보여주기 위해 전달
+    
+    // login result event에 넘겨줄 resultData.rooms는 lobby에서 active room list를 보여주기 위해 전달
     // 전체 socket 확인해서 중복 nickname있는지 체크
     const sockets = await io.fetchSockets();
     let result = true;
@@ -63,19 +47,19 @@ io.on("connection", (socket) => {
       }
     }
 
+
     // 로그인 결과를 client에게 전송
     // socket.emit("login-result",resultData)
-    // resultData = {result: true/false, msg, rooms,nickname,img}
-
+    // resultData = {result: true/false, msg, rooms,name,img}
     if (result) {
       // 로그인 성공
-      // socket.avatar에 이미지 저장하는 부분 아직 안함
       socket.nickname = data.nickname;
       socket.img = data.img;
       resultData.result = true;
       resultData.name = data.nickname;
       resultData.msg = `Hi ${socket.nickname} !`;
       resultData.rooms = rooms;
+      resultData.img=data.img
       console.log(resultData);
       console.log(
         `login success, socketID: ${socket.id}, nickname: ${socket.nickname}`
