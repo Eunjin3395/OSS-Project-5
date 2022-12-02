@@ -18,7 +18,7 @@ let rooms = new Array(); //-> 아래와 같은 room 객체를 가진 array, 전�
 // }
 
 
-// let info;
+
 io.on("connection", (socket) => {
   console.log("a user connected");
 
@@ -72,6 +72,63 @@ io.on("connection", (socket) => {
     }
     socket.emit("login-result", resultData);
   });
+
+
+
+  // 채팅방 생성 (중복 roomname 들어올 시 거부) -> "create-room"을 listen하고 "create-room-result"를 emit
+  // socket.emit("create-room",data)에 대한 listener
+  // data= {roomname,isSecret:Y/N,secretCode,limit}
+  socket.on("create-room", async (data) => {
+    // console.log('data: ' + JSON.stringify(data));
+    let result = true;
+
+    // 현재 rooms array에 같은 이름을 가진 room 존재하는지 체크
+    rooms.forEach((room) => {
+      if (room.roomname == data.roomname) {
+        // rooms array에 해당 roomname을 가진 방 이미 존재할 경우
+        console.log("room create failed, same room name", room.roomname);
+        socket.emit("room-create-result", {
+          roomname: "",
+          result: false,
+          msg: "Please enter new room name",
+        });
+        result = false;
+      }
+    });
+    if (!result) return;
+
+    // data.isSecret을 boolean으로 바꾸어 room array에 저장
+    var boolSecret=false
+    if(data.isSecret=="Y")
+      boolSecret=true
+
+    // room 생성
+    let roomdata = {
+      roomname: data.roomname,
+      memNum: 0,
+      memList: [],
+      isSecret: boolSecret,
+      secretCode: data.secretCode,
+      limit: data.limit,
+      adminNick: socket.nickname,
+    };
+    // 방을 생성하기만 하고 join은 X, 해당 roomdata를 rooms array에 저장
+    rooms.push(roomdata);
+    console.log("room created, data: " + JSON.stringify(roomdata));
+
+    // socket.emit("room-create-result",data)
+    // data = {roomname,result,msg}
+    socket.emit("room-create-result", {
+      roomname: data.roomname,
+      result: true,
+      msg: "room create success!",
+    });
+  });
+
+
+
+
+
 });
 
 
