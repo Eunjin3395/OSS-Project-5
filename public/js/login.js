@@ -65,7 +65,7 @@ socket.on('login-result',(data)=>{
 
     loginInfo={name:data.name, img:data.img} // client단에서 자신의 nickname과 img 접근하게 하기위함
 
-    // lobby의 active한 room list update
-    // lobby_roomUpdate(data.rooms)
+    // lobby의 active한 room list update (login->lobby로 갈 때 현재 active한 방 리스트 불러옴)
+    lobby_roomUpdate(data.rooms)
   }
 })

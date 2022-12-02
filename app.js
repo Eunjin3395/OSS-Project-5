@@ -19,6 +19,50 @@ let rooms = new Array(); //-> 아래와 같은 room 객체를 가진 array, 전�
 
 
 
+// roomname받아 해당 room 객체 리턴하는 함수
+function getRoomByName(nameInput) {
+  let result = {};
+  rooms.forEach((room) => {
+    if (room.roomname == nameInput) result = room;
+  });
+  return result;
+}
+
+// roomname받아 해당 room에 있는 member들의 nickname list 리턴하는 함수
+function getMemberInRoom(nameInput) {
+  let result = new Array();
+  memberSet = io.sockets.adapter.rooms.get(nameInput);
+  for (const member of memberSet) {
+    let sock = io.sockets.sockets.get(member);
+    result.push(sock.nickname);
+  }
+  return result;
+}
+
+// rooms array 안의 전체 room들의 인원수/멤버리스트 업데이트하는 함수, 파라미터에 roomname 넘겨주면 그 room을 삭제함
+function roomUpdate(delRoom = "") {
+  console.log("roomUpdate called")
+  //해당 room을 삭제해야하는 경우 roomname을 받음
+  //rooms array에 있는 모든 방에 대해 다음을 실행
+  for (var i = 0; i < rooms.length; i++) {
+    if (delRoom) {
+      // 삭제돼야할 room 있을경우 rooms array에서 해당 room을 삭제
+      for (var i = 0; i < rooms.length; i++) {
+        if (rooms[i].roomname == delRoom) {
+          rooms.splice(i, 1);
+          i--;
+        }
+      }
+    } else {
+      // 삭제 이외의 event 발생했을 떄는 인원수와 멤버리스트 갱신
+      rooms[i].memList = getMemberInRoom(rooms[i].roomname);
+      rooms[i].memNum = io.sockets.adapter.rooms.get(rooms[i].roomname).size;
+    }
+  }
+}
+
+
+
 io.on("connection", (socket) => {
   console.log("a user connected");
 
@@ -46,7 +90,6 @@ io.on("connection", (socket) => {
         break;
       }
     }
-
 
     // 로그인 결과를 client에게 전송
     // socket.emit("login-result",resultData)
@@ -123,6 +166,42 @@ io.on("connection", (socket) => {
       result: true,
       msg: "room create success!",
     });
+  });
+
+
+
+
+  // 방 입장 & 내 방 정보 세팅 & 전체 rooms array update
+  // -> "room-in"을 listen,
+  //    "notify-message"를 sockets.in(socket.roomname).emit,
+  //    "this-room-info"를 emit,
+  //    "rooms-update"를 broadcast.emit
+  //socket.emit("room-in",roomname)에 대한 listener
+  socket.on("room-in", (roomname) => {
+    // socket을 해당 roomname으로 join시킴
+    socket.join(roomname);
+    socket.roomname = roomname;
+
+    // 해당 방에 새 user가 방 입장했음 msg 전송
+    // sockets.in(socket.roomname).emit("notify-message",msg)
+    // 아직 listener 없음
+    // io.sockets
+    //   .in(socket.roomname)
+    //   .emit("notify-message", `${socket.nickname} joined this room.`); 
+
+    // 전체 rooms array update(특정 방의 인원수가 +1 되었으므로)
+    roomUpdate();
+
+    // 내 방의 정보를 client에게 전송 (roomname, 현재 인원수 / limit, 멤버 리스트 표시하기 위함)
+    // socket.emit("this-room-info",thisRoom) , room은 내 방 객체
+    // 아직 listener 없음
+    // let thisRoom = getRoomByName(socket.roomname);
+    // socket.emit("this-room-info", thisRoom);
+
+    // 다른 모든 socket에도 rooms array에 변화 생겼음을 client에게 전송 (특정 방의 인원수가 +1 되었으므로)
+    // rooms는 전체 active한 rooms array
+    // 아직 listener 없음
+    socket.broadcast.emit("rooms-update", rooms);
   });
 
 
