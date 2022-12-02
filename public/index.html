@@ -1,3 +1,5 @@
+<!-- 백엔드 기능 구현 테스트용 html입니다!! -->
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -86,7 +88,7 @@
     </div>
 
     <div id="lobbyArea" class="d-none">
-      <!-- <div>
+      <div>
         <p>Room List</p>
         <ul id="lobby_rooms">
           <li></li>
@@ -122,30 +124,11 @@
           </p>
           <button>Add</button>
         </form>
-      </div> -->
+      </div>
     </div>
 
     <div id="chatArea" class="d-none">
-      <!-- <div id="roomTopBar">
-        <ul id="roomInfo">
-          <li id="roomInfo_name"></li>
-          <li id="roomInfo_num"></li>
-        </ul>
-        <div class="g_id_signout">
-          <button onClick="clickRoomOut()">나가기</button>
-        </div>
-      </div>
-      <div>
-        <p>--- members in this room ---</p>
-        <ul id="memList"></ul>
-      </div>
-
-      <div id="videoChatArea"></div>
-
-      <ul id="messages"></ul>
-      <form id="messageForm" action="">
-        <input id="messageInput" autocomplete="off" /><button>Send</button>
-      </form> -->
+      
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
@@ -156,10 +139,7 @@
       var loginInfo; // {name, img}로 구성, client단에서 자신의 nickname과 img 접근하게 하기위함
     </script>
 
-    <!-- <script src="https://meet.jit.si/external_api.js"></script> -->
-
     <script src="./js/login.js"></script>
-    <!-- <script src="./js/lobby.js"></script>
-    <script src="./js/chat.js"></script> -->
+    <script src="./js/lobby.js"></script>
   </body>
 </html>
