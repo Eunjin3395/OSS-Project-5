@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "jquery": "^3.6.1",
+    "nodemon": "^2.0.20",
+    "socket.io": "^4.5.3",
+    "xmlhttprequest": "^1.8.0"
+  },
+  "name": "oss-project-5",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eunjin3395/OSS-Project-5.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Eunjin3395/OSS-Project-5/issues"
+  },
+  "homepage": "https://github.com/Eunjin3395/OSS-Project-5#readme"
+}

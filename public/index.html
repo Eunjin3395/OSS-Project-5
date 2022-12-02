@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <style>
+      body {
+        margin: 0;
+        padding-bottom: 3rem;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+      }
+
+      #form {
+        background: rgba(0, 0, 0, 0.15);
+        padding: 0.25rem;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        height: 3rem;
+        box-sizing: border-box;
+        backdrop-filter: blur(10px);
+      }
+      #input {
+        border: none;
+        padding: 0 1rem;
+        flex-grow: 1;
+        border-radius: 2rem;
+        margin: 0.25rem;
+      }
+      #input:focus {
+        outline: none;
+      }
+      #form > button {
+        background: #333;
+        border: none;
+        padding: 0 1rem;
+        margin: 0.25rem;
+        border-radius: 3px;
+        outline: none;
+        color: #fff;
+      }
+
+      #messages {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+      #messages > li {
+        padding: 0.5rem 1rem;
+      }
+      #messages > li:nth-child(odd) {
+        background: #efefef;
+      }
+      .d-none {
+        display: none;
+      }
+      .selected {
+        border: #333 2px solid;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loginArea">
+      <form id="loginForm" action="">
+        <ul id="avata">
+          <li id="avatar01" onclick="selAvatar(this.id)">
+            <img src="images/01.png" width="100px" />
+          </li>
+          <li id="avatar02" onclick="selAvatar(this.id)">
+            <img src="images/02.png" width="100px" />
+          </li>
+          <li id="avatar03" onclick="selAvatar(this.id)">
+            <img src="images/03.png" width="100px" />
+          </li>
+          <li id="avatar04" onclick="selAvatar(this.id)">
+            <img src="images/04.png" width="100px" />
+          </li>
+          <li id="avatar05" onclick="selAvatar(this.id)">
+            <img src="images/05.png" width="100px" />
+          </li>
+        </ul>
+        <input id="nickname" autocomplete="off" /><button>Send</button>
+      </form>
+    </div>
+
+    <div id="lobbyArea" class="d-none">
+      <!-- <div>
+        <p>Room List</p>
+        <ul id="lobby_rooms">
+          <li></li>
+        </ul>
+      </div>
+      <div id="createRoom">
+        <form id="roomCreateForm" action="">
+          <p>Room Title: <input id="createRoomTitle" autocomplete="off" /></p>
+          <p>
+            방 공개 여부:
+            <input
+              type="radio"
+              id="isSecret_N"
+              name="isSecret"
+              value="N"
+              checked
+            /><label for="isSecret_N">공개</label>
+            <input
+              type="radio"
+              id="isSecret_Y"
+              name="isSecret"
+              value="Y"
+            /><label for="isSecret_Y">비공개</label>
+          </p>
+
+          <p id="secretCodeArea" class="d-none">
+            비공개 방 코드: <input id="createSecretCode" autocomplete="off" />
+          </p>
+
+          <p>
+            방 인원수 제한:
+            <input id="createRoomLimit" autocomplete="off" value="6" /> (1~25명)
+          </p>
+          <button>Add</button>
+        </form>
+      </div> -->
+    </div>
+
+    <div id="chatArea" class="d-none">
+      <!-- <div id="roomTopBar">
+        <ul id="roomInfo">
+          <li id="roomInfo_name"></li>
+          <li id="roomInfo_num"></li>
+        </ul>
+        <div class="g_id_signout">
+          <button onClick="clickRoomOut()">나가기</button>
+        </div>
+      </div>
+      <div>
+        <p>--- members in this room ---</p>
+        <ul id="memList"></ul>
+      </div>
+
+      <div id="videoChatArea"></div>
+
+      <ul id="messages"></ul>
+      <form id="messageForm" action="">
+        <input id="messageInput" autocomplete="off" /><button>Send</button>
+      </form> -->
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+      var currentArea = "login";
+      // var jitsiApi; // 화상채팅 jitsi API 전역변수로 설정
+      var loginInfo; // client단에서 자신의 nickname과 img 접근하게 하기위함
+    </script>
+
+    <!-- <script src="https://meet.jit.si/external_api.js"></script> -->
+
+    <script src="./js/login.js"></script>
+    <!-- <script src="./js/lobby.js"></script>
+    <script src="./js/chat.js"></script> -->
+  </body>
+</html>
