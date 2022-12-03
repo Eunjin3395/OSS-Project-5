@@ -7,6 +7,8 @@ import red from "../../images/red.png";
 import blue from "../../images/blue.png";
 import orange from "../../images/orange.png";
 import purple from "../../images/purple.png";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import jwt_decode from "jwt-decode";
 
 export default function LoginPage() {
   const Navigate = useNavigate();
@@ -96,7 +98,20 @@ export default function LoginPage() {
             <i class='fa-solid fa-check'></i>
           </button>
         </form>
-        <div id='buttonDiv'></div>
+        <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+          <GoogleLogin
+            onSuccess={credentialResponse => {
+              let payload = jwt_decode(credentialResponse.credential);
+              socket.emit("login", {
+                nickname: payload.name,
+                img: payload.picture
+              });
+            }}
+            onError={() => {
+              console.log('Login Failed');
+            }}
+          />
+        </GoogleOAuthProvider>
       </div>
     </div>
   );

@@ -39,24 +39,6 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-      <script>
-        function handleCredentialResponse(response) {
-          socket.emit('login', response.credential);
-        }
-        window.onload = function () {
-          google.accounts.id.initialize({
-            client_id: "YOUR_GOOGLE_CLIENT_ID",
-            callback: handleCredentialResponse
-          });
-          google.accounts.id.renderButton(
-            document.getElementById("buttonDiv"),
-            { theme: "outline", size: "small" }  // customization attributes
-          );
-          google.accounts.id.prompt();
-        }
-      </script>
-    </div>
     <script src="https://kit.fontawesome.com/b062febd1b.js" crossorigin="anonymous"></script>
   </body>
 </html>
