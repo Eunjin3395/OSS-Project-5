@@ -1,6 +1,8 @@
 {
   "dependencies": {
+    "client": "^0.0.1",
     "cors": "^2.8.5",
+    "create-react-app": "^5.0.1",
     "express": "^4.18.2",
     "jquery": "^3.6.1",
     "nodemon": "^2.0.20",
