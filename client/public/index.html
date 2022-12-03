@@ -29,9 +29,41 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <script
-      src="https://kit.fontawesome.com/b062febd1b.js"
-      crossorigin="anonymous"
-    ></script>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+     <script src="https://accounts.google.com/gsi/client" async defer></script>
+      <script>
+        function handleCredentialResponse(response) {
+          socket.emit('login', response.credential);
+        }
+        window.onload = function () {
+          google.accounts.id.initialize({
+            client_id: "YOUR_GOOGLE_CLIENT_ID",
+            callback: handleCredentialResponse
+          });
+          google.accounts.id.renderButton(
+            document.getElementById("buttonDiv"),
+            { theme: "outline", size: "small" }  // customization attributes
+          );
+          google.accounts.id.prompt();
+        }
+      </script>
+      <script src="https://meet.jit.si/external_api.js"></script>
+      <script>
+      var jitsiApi; // 화상채팅 jitsi API 전역변수로 설정
+      var loginInfo; // client단에서 자신의 nickname과 img 접근하게 하기위함
+    </script>
+    <script src="../../public/BackEnd/js/lobby.js"></script>
+    <script src="../../public/BackEnd/js/chat.js"></script>
+    </div>
+    <script src="https://kit.fontawesome.com/b062febd1b.js" crossorigin="anonymous"></script>
   </body>
 </html>
