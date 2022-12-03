@@ -110,6 +110,10 @@ function clickRoomOut() {
   if (input) {
     socket.emit("room-out");
 
+    // 화상채팅 자동 종료 및 html clear
+    jitsiApi.executeCommand("hangup");
+    document.getElementById("videoChatArea").innerHTML = "";
+
     document.getElementById("chatArea").className = "d-none";
     document.getElementById("lobbyArea").className = "";
     currentArea = "lobby";
