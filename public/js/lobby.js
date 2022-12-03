@@ -118,13 +118,3 @@ function lobby_roomUpdate(rooms) {
     lobbyRooms.appendChild(item); // 위와 같은 onClick eventlistener를 갖는 room <li>들을 로비의 room list에 추가
   });
 }
-
-
-// 이 부분은 chattingPage 구현되면 그쪽으로 옮겨야함
-socket.on("rooms-update",(rooms)=>{
-  console.log("room update called");
-
-  if(currentArea=="lobby"){
-    lobby_roomUpdate(rooms);
-  }
-})

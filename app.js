@@ -77,10 +77,11 @@ io.on("connection", (socket) => {
       roomUpdate(socket.roomname); // 해당 room 삭제
     else {
       // 채팅방에 msg남기고 전체 rooms array update
-      // 아직 listener 없음
-      // io.sockets
-      //   .in(socket.roomname)
-      //   .emit("notify-message", `${socket.nickname} left this room.`);
+      // 로비 페이지 구현 전 테스트용 !!!!!!!!
+      // 로비 페이지 구현 완료 시 삭제하고 아래 주석으로 대체
+      // 현재는 방 구분없이 전체에 메세지 출력
+      io.sockets.emit("notify-message", `${socket.nickname} left this room.`);
+      // io.sockets.in(socket.roomname).emit("notify-message", `${socket.nickname} left this room.`);
       roomUpdate();
     }
 
@@ -210,27 +211,93 @@ io.on("connection", (socket) => {
 
     // 해당 방에 새 user가 방 입장했음 msg 전송
     // sockets.in(socket.roomname).emit("notify-message",msg)
-    // 아직 listener 없음
-    // io.sockets
-    //   .in(socket.roomname)
-    //   .emit("notify-message", `${socket.nickname} joined this room.`); 
+    io.sockets
+      .in(socket.roomname)
+      .emit("notify-message", `${socket.nickname} joined this room.`); 
 
     // 전체 rooms array update(특정 방의 인원수가 +1 되었으므로)
     roomUpdate();
 
     // 내 방의 정보를 client에게 전송 (roomname, 현재 인원수 / limit, 멤버 리스트 표시하기 위함)
     // socket.emit("this-room-info",thisRoom) , room은 내 방 객체
-    // 아직 listener 없음
-    // let thisRoom = getRoomByName(socket.roomname);
-    // socket.emit("this-room-info", thisRoom);
+    let thisRoom = getRoomByName(socket.roomname);
+    socket.emit("this-room-info", thisRoom);
 
     // 다른 모든 socket에도 rooms array에 변화 생겼음을 client에게 전송 (특정 방의 인원수가 +1 되었으므로)
     // rooms는 전체 active한 rooms array
-    // 아직 listener 없음
     socket.broadcast.emit("rooms-update", rooms);
   });
 
 
+
+
+
+  // client로부터 메시지 받고 해당 방의 모든 client에게 메시지 전달
+  // -> "chat-message"를 listen, "chat-message"를 sockets.in(socket.roomname).emit
+  // socket.emit("chat-message",msg)에 대한 listener
+  socket.on("chat-message", (message) => {
+    // 해당 방의 모든 socket에게 msg와 nickname 전달
+    // sockets.in(socket.roomname).emit("chat-message",data)
+    // data = {msg 보낸 사람의 name,img,msg,time}
+    let time = new Date();
+    let hh = time.getHours();
+    let mm = time.getMinutes();
+    let sendTime = `${hh} : ${mm}`;
+    data = {
+      name: socket.nickname,
+      img: socket.img,
+      msg: message,
+      time: sendTime,
+    };
+
+    // 로비 페이지 구현 전 테스트용 !!!!!!!!
+    // 로비 페이지 구현 완료 시 삭제하고 아래 주석으로 대체
+    // 현재는 방 구분없이 전체에 메세지 출력
+    io.sockets.emit("chat-message", data);
+    // io.sockets.in(socket.roomname).emit("chat-message", data);
+
+    console.log(
+      `New chat in roomname ${socket.roomname}, ${socket.nickname} says: ${message}`
+    );
+  });
+
+
+
+
+
+
+  // 방 나가기, 필요 시 방 삭제
+  // -> "room-out"을 listen하고,
+  //    "room-out-result"를 emit(lobby_roomUpdate에 필요한 rooms array 전달용)
+  // socket.emit("room-out")에 대한 listener
+  // socket.emit("room-out-result",rooms)
+  socket.on("room-out", () => {
+    if (getRoomByName(socket.roomname).memNum == 1) {
+      // 내가 이 방의 마지막 남은 1명인데 내가 나가는 경우
+      socket.leave(socket.roomname); // socket의 join 풀어줌
+      roomUpdate(socket.roomname); // 해당 room 삭제
+    } else {
+      // 채팅방에 msg남기고 join 풀고 전체 rooms array update
+      // 로비 페이지 구현 전 테스트용 !!!!!!!!
+      // 로비 페이지 구현 완료 시 삭제하고 아래 주석으로 대체
+      // 현재는 방 구분없이 전체에 메세지 출력
+      io.sockets.emit("notify-message", `${socket.nickname} left this room.`);
+      // io.sockets.in(socket.roomname).emit("notify-message", `${socket.nickname} left this room.`);
+      
+      console.log("user left room");
+      socket.leave(socket.roomname); // socket의 join 풀어줌
+      roomUpdate();
+    }
+
+    // chat->lobby로 갈때 client에서 현재 active한 room list update함수 호출하기 위한 
+    // 데이터인 rooms array를 넘겨줌
+    socket.emit("room-out-result", rooms);
+
+    // chat room의 info와 lobby의 room list 갱신 위함
+    // socket.broadcast.emit("rooms-update",rooms)
+    // rooms는 전체 active한 rooms array
+    socket.broadcast.emit("rooms-update", rooms);
+  });
 
 
 
