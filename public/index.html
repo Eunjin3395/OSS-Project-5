@@ -85,6 +85,28 @@
         </ul>
         <input id="nickname" autocomplete="off" /><button>Send</button>
       </form>
+      <script src="https://accounts.google.com/gsi/client" async defer></script>
+      <script>
+        function handleCredentialResponse(response) {
+          socket.emit('login', response.credential);  // login
+        }
+        window.onload = function () {
+          google.accounts.id.initialize({
+            client_id: "YOUR_GOOGLE_CLIENT_ID",
+            callback: handleCredentialResponse
+          });
+          google.accounts.id.renderButton(
+            document.getElementById("buttonDiv"),
+            { theme: "outline", size: "medium" }  // customization attributes
+          );
+          google.accounts.id.prompt();
+
+          if (!socket.connected) {
+            google.accounts.id.disableAutoSelect();  // logout
+          }
+        }
+      </script>
+      <div id="buttonDiv"></div>
     </div>
 
     <div id="lobbyArea" class="d-none">
@@ -133,9 +155,7 @@
           <li id="roomInfo_name"></li>
           <li id="roomInfo_num"></li>
         </ul>
-        <div class="g_id_signout">
-          <button onClick="clickRoomOut()">나가기</button>
-        </div>
+        <button onClick="clickRoomOut()">나가기</button>
       </div>
       <div>
         <p>--- members in this room ---</p>
