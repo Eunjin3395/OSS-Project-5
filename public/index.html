@@ -128,7 +128,26 @@
     </div>
 
     <div id="chatArea" class="d-none">
-      
+      <div id="roomTopBar">
+        <ul id="roomInfo">
+          <li id="roomInfo_name"></li>
+          <li id="roomInfo_num"></li>
+        </ul>
+        <div class="g_id_signout">
+          <button onClick="clickRoomOut()">나가기</button>
+        </div>
+      </div>
+      <div>
+        <p>--- members in this room ---</p>
+        <ul id="memList"></ul>
+      </div>
+
+      <div id="videoChatArea"></div>
+
+      <ul id="messages"></ul>
+      <form id="messageForm" action="">
+        <input id="messageInput" autocomplete="off" /><button>Send</button>
+      </form>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
@@ -141,5 +160,6 @@
 
     <script src="./js/login.js"></script>
     <script src="./js/lobby.js"></script>
+    <script src="./js/chat.js"></script>
   </body>
 </html>
