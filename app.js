@@ -6,6 +6,8 @@ const server = require("http").createServer(app);
 const cors = require("cors");
 const io = socketio(server, { cors: { origin: "*" } });
 let rooms = new Array(); //-> 아래와 같은 room 객체를 가진 array, 전체 active한 방의 정보들을 저장
+var { OAuth2Client } = require("google-auth-library");
+var client = new OAuth2Client(process.env["GOOGLE_CLIENT_ID"]);
 
 // rooms[0]={
 //   roomname:'', -> 채팅방 이름
@@ -98,6 +100,24 @@ io.on("connection", (socket) => {
   // data = {nickname, img}
   // front\src\components\views\LoginPage.js
   socket.on("login", async (data) => {
+    if (typeof data !== "object") {
+      try {
+        var ticket = await client.verifyIdToken({
+          idToken: data,
+          audience: process.env["GOOGLE_CLIENT_ID"],
+        });
+        var payload = ticket.getPayload();
+        var name = payload["name"];
+        var picture = payload["picture"];
+      } catch (err) {
+        console.error(err);
+      }
+      data = {
+        nickname: name,
+        img: picture,
+      };
+    }
+    
     console.log("data: " + JSON.stringify(data));
     let resultData = {
       result: false,
