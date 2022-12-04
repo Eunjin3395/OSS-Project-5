@@ -60,10 +60,7 @@ export default function ChattingPage() {
               displayName: userName,
               email: userName + "@gmail.com",
             }}
-            onApiReady={(externalApi) => {
-              // here you can attach custom event listeners to the Jitsi Meet External API
-              // you can also store it locally to execute commands
-            }}
+            onApiReady={ externalApi => externalApi.executeCommand("avatarUrl",socket.img) }
             getIFrameRef={(iframeRef) => {}}
           />
         </div>
