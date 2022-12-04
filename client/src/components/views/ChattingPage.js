@@ -67,6 +67,7 @@ export default function ChattingPage() {
             getIFrameRef={(iframeRef) => {}}
           />
         </div>
+        <div className='hide'></div>
 
         <div className='Chat-Input-Container'>
           <div id='Chat-Container'>
