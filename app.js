@@ -152,7 +152,7 @@ io.on("connection", (socket) => {
       resultData.img=data.img
       console.log(resultData);
       console.log(
-        `login success, socketID: ${socket.id}, nickname: ${socket.nickname}`
+        `login success, socketID: ${socket.id}, nickname: ${socket.nickname}, img:${resultData.img}`
       );
     } else {
       // 로그인 실패
