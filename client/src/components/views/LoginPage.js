@@ -48,18 +48,18 @@ export default function LoginPage() {
       Room: ChatRoom,
       img: img,
     });
-
-    // 로그인 성공 시 로비로 이동.
-    // 사용자의 위치도 업데이트
-    socket.on("login-result", (resultData) => {
-      socket.nickname = resultData.name;
-      console.log(resultData);
-      if (resultData.result) {
-        socket.currentArea = "lobby";
-        return Navigate("/chat"); // 로비 만들어지면 수정할 것.
-      } else console.log(resultData.msg);
-    });
   }
+
+  // 로그인 성공 시 로비로 이동.
+  // 사용자의 위치도 업데이트
+  socket.on("login-result", (resultData) => {
+    socket.nickname = resultData.name;
+    console.log(resultData);
+    if (resultData.result) {
+      socket.currentArea = "lobby";
+      return Navigate("/chat"); // 로비 만들어지면 수정할 것.
+    } else console.log(resultData.msg);
+  });
 
   function ImgChanger(e) {
     switch (userImg) {
