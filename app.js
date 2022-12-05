@@ -155,6 +155,7 @@ io.on("connection", (socket) => {
       console.log("login Fail");
     }
     socket.emit("login-result", resultData);
+    socket.emit("roomList", rooms);
   });
 
   // 채팅방 생성 (중복 roomname 들어올 시 거부) -> "create-room"을 listen하고 "create-room-result"를 emit
@@ -204,6 +205,7 @@ io.on("connection", (socket) => {
       result: true,
       msg: "room create success!",
     });
+    socket.emit("roomList", rooms);
   });
 
   // 방 입장 & 내 방 정보 세팅 & 전체 rooms array update
