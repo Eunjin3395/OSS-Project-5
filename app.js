@@ -19,8 +19,6 @@ var client = new OAuth2Client(process.env["GOOGLE_CLIENT_ID"]);
 //   adminNick:'' -> 방장의 nickname
 // }
 
-
-
 // roomname받아 해당 room 객체 리턴하는 함수
 function getRoomByName(nameInput) {
   let result = {};
@@ -33,7 +31,8 @@ function getRoomByName(nameInput) {
 // roomname받아 해당 room에 있는 member들의 nickname list 리턴하는 함수
 function getMemberInRoom(nameInput) {
   let result = new Array();
-  memberSet = io.sockets.adapter.rooms.get(nameInput);
+  let memberSet = io.sockets.adapter.rooms.get(nameInput);
+  console.log(memberSet);
   for (const member of memberSet) {
     let sock = io.sockets.sockets.get(member);
     result.push(sock.nickname);
@@ -43,7 +42,7 @@ function getMemberInRoom(nameInput) {
 
 // rooms array 안의 전체 room들의 인원수/멤버리스트 업데이트하는 함수, 파라미터에 roomname 넘겨주면 그 room을 삭제함
 function roomUpdate(delRoom = "") {
-  console.log("roomUpdate called")
+  console.log("roomUpdate called");
   //해당 room을 삭제해야하는 경우 roomname을 받음
   //rooms array에 있는 모든 방에 대해 다음을 실행
   for (var i = 0; i < rooms.length; i++) {
@@ -63,11 +62,8 @@ function roomUpdate(delRoom = "") {
   }
 }
 
-
-
 io.on("connection", (socket) => {
   console.log("a user connected");
-
 
   // 창 새로고침하거나 창 닫아서 socket이 disconnect됐을 때 rooms array update & 채팅방에 notify msg 남김
   // -> "notify-message"를 sockets.in(socket.roomname).emit
@@ -93,8 +89,6 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("rooms-update", rooms);
   });
 
-
-
   // 로그인 (중복 닉네임 들어올 시 거부) -> "login"을 listen하고 "login-result"를 emit
   // socket.emit("login",data)에 대한 listener
   // data = {nickname, img}
@@ -117,16 +111,16 @@ io.on("connection", (socket) => {
         img: picture,
       };
     }
-    
+
     console.log("data: " + JSON.stringify(data));
     let resultData = {
       result: false,
       msg: "",
       name: "",
       rooms: [],
-      img:""
+      img: "",
     };
-    
+
     // login result event에 넘겨줄 resultData.rooms는 lobby에서 active room list를 보여주기 위해 전달
     // 전체 socket 확인해서 중복 nickname있는지 체크
     const sockets = await io.fetchSockets();
@@ -149,7 +143,7 @@ io.on("connection", (socket) => {
       resultData.name = data.nickname;
       resultData.msg = `Hi ${socket.nickname} !`;
       resultData.rooms = rooms;
-      resultData.img=data.img
+      resultData.img = data.img;
       console.log(resultData);
       console.log(
         `login success, socketID: ${socket.id}, nickname: ${socket.nickname}, img:${resultData.img}`
@@ -161,9 +155,8 @@ io.on("connection", (socket) => {
       console.log("login Fail");
     }
     socket.emit("login-result", resultData);
+    socket.emit("roomList", rooms);
   });
-
-
 
   // 채팅방 생성 (중복 roomname 들어올 시 거부) -> "create-room"을 listen하고 "create-room-result"를 emit
   // socket.emit("create-room",data)에 대한 listener
@@ -188,9 +181,8 @@ io.on("connection", (socket) => {
     if (!result) return;
 
     // data.isSecret을 boolean으로 바꾸어 room array에 저장
-    var boolSecret=false
-    if(data.isSecret=="Y")
-      boolSecret=true
+    var boolSecret = false;
+    if (data.isSecret == "Y") boolSecret = true;
 
     // room 생성
     let roomdata = {
@@ -213,10 +205,8 @@ io.on("connection", (socket) => {
       result: true,
       msg: "room create success!",
     });
+    socket.emit("roomList", rooms);
   });
-
-
-
 
   // 방 입장 & 내 방 정보 세팅 & 전체 rooms array update
   // -> "room-in"을 listen,
@@ -233,7 +223,7 @@ io.on("connection", (socket) => {
     // sockets.in(socket.roomname).emit("notify-message",msg)
     io.sockets
       .in(socket.roomname)
-      .emit("notify-message", `${socket.nickname} joined this room.`); 
+      .emit("notify-message", `${socket.nickname} joined this room.`);
 
     // 전체 rooms array update(특정 방의 인원수가 +1 되었으므로)
     roomUpdate();
@@ -247,10 +237,6 @@ io.on("connection", (socket) => {
     // rooms는 전체 active한 rooms array
     socket.broadcast.emit("rooms-update", rooms);
   });
-
-
-
-
 
   // client로부터 메시지 받고 해당 방의 모든 client에게 메시지 전달
   // -> "chat-message"를 listen, "chat-message"를 sockets.in(socket.roomname).emit
@@ -281,11 +267,6 @@ io.on("connection", (socket) => {
     );
   });
 
-
-
-
-
-
   // 방 나가기, 필요 시 방 삭제
   // -> "room-out"을 listen하고,
   //    "room-out-result"를 emit(lobby_roomUpdate에 필요한 rooms array 전달용)
@@ -303,13 +284,13 @@ io.on("connection", (socket) => {
       // 현재는 방 구분없이 전체에 메세지 출력
       io.sockets.emit("notify-message", `${socket.nickname} left this room.`);
       // io.sockets.in(socket.roomname).emit("notify-message", `${socket.nickname} left this room.`);
-      
+
       console.log("user left room");
       socket.leave(socket.roomname); // socket의 join 풀어줌
       roomUpdate();
     }
 
-    // chat->lobby로 갈때 client에서 현재 active한 room list update함수 호출하기 위한 
+    // chat->lobby로 갈때 client에서 현재 active한 room list update함수 호출하기 위한
     // 데이터인 rooms array를 넘겨줌
     socket.emit("room-out-result", rooms);
 
@@ -318,13 +299,7 @@ io.on("connection", (socket) => {
     // rooms는 전체 active한 rooms array
     socket.broadcast.emit("rooms-update", rooms);
   });
-
-
-
 });
-
-
-
 
 // static folder 설정
 app.use(express.static(path.join(__dirname, "public")));

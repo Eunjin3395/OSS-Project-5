@@ -1,60 +1,138 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../css/LobbyPage.css";
+import socket from "./socket";
 
 const LobbyPage = () => {
+  const navigate = useNavigate();
+
+  const [isSecret, setIsSecret] = useState("N");
+  const [roomList, setRoomList] = useState([]);
+
+  useEffect(() => {
+    console.log("방 리스트", roomList);
+  });
+
+  const roomNameRef = useRef();
+  const secretCodeRef = useRef();
+  const limitRef = useRef();
+
+  const roomDoubleClickHandler = (roomName) => {
+    socket.emit("room-in", roomName);
+    navigate("/chat");
+  };
+
+  socket.on("login-result", (data) => {
+    console.log("데이터", data);
+  });
+
+  const isSecretChangeHandler = (e) => {
+    console.log(e.target.value);
+    setIsSecret(e.target.value);
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    const roomData = {
+      roomname: roomNameRef.current.value,
+      secretCode: isSecret === "Y" ? secretCodeRef.current.value : "",
+      isSecret: isSecret === "Y" ? isSecret : "",
+      limit: limitRef.current.value,
+    };
+    socket.currentArea = "lobby";
+    socket.emit("create-room", roomData);
+  };
+
+  socket.on("room-create-result", (data) => {
+    if (!data) console.log("Failed to create room!");
+  });
+
+  socket.on("roomList", (data) => {
+    data.map((room) =>
+      setRoomList([
+        ...roomList,
+        {
+          roomname: room.roomname,
+          isSecret: room.isSecret,
+          limit: room.limit,
+          memNum: room.memNum,
+        },
+      ])
+    );
+  });
+
+  useEffect(() => {
+    socket.on("room-out-result", (data) => {
+      console.log("나왔다", data);
+      data.map((room) =>
+        setRoomList([
+          ...roomList,
+          {
+            roomname: room.roomname,
+            isSecret: room.isSecret,
+            limit: room.limit,
+            memNum: room.memNum,
+          },
+        ])
+      );
+    });
+  });
+
   return (
-    <div id="lobbyArea" class="d-none">
-      <div class="lobby-top">
-        <div class="lobby-title">
-          <p>Lobby</p>
+    <div id="lobbyArea" className="d-none">
+      <div className="lobby-top">
+        <div className="lobby-title">
+          <p>{socket.nickname}'s Lobby</p>
         </div>
-        <div class="lobby-mid">
-          <div class="lobby-list">
-            <div class="lobby-list-title">채팅 ▾</div>
-            <div class="lobby-room-list">
-              <div class="lobby-room-chat">
-                <div class="lobby-room-chat-left">
-                  <div class="lobby-chat-name">user1</div>
-                  <div class="lobby-chat-latest">ㅇㄷ노?</div>
-                </div>
-                <div class="lobby-room-chat-right">🔒 2 / 2</div>
-              </div>
-              <div class="lobby-room-chat">
-                <div class="lobby-room-chat-left">
-                  <div class="lobby-chat-name">18 박선홍 형</div>
-                  <div class="lobby-chat-latest">롤중</div>
-                </div>
-                <div class="lobby-room-chat-right">🔒 2 / 4</div>
-              </div>
-              <div class="lobby-room-chat">
-                <div class="lobby-room-chat-left">
-                  <div class="lobby-chat-name">컴공 단톡방</div>
-                  <div class="lobby-chat-latest">감자</div>
-                </div>
-                <div class="lobby-room-chat-right">🔓 10 / 30</div>
-              </div>
+        <div className="lobby-mid">
+          <div className="lobby-list">
+            <div className="lobby-list-title">채팅 ▾</div>
+            <div className="lobby-room-list">
+              {roomList.map((room) => (
+                <>
+                  <div
+                    className="lobby-room-chat"
+                    onDoubleClick={() => {
+                      roomDoubleClickHandler(room.roomname);
+                    }}
+                  >
+                    <div className="lobby-room-chat-left">
+                      <div className="lobby-chat-name">
+                        {room.isSecret ? "🔒" : "🔓"}
+                        {room.roomname}
+                      </div>
+                      <div className="lobby-chat-latest"></div>
+                    </div>
+                    <div className="lobby-room-chat-right">
+                      {room.memNum} / {room.limit}
+                    </div>
+                  </div>
+                </>
+              ))}
             </div>
           </div>
-          <div class="lobby-create-room">
+          <div className="lobby-create-room">
             <div id="createRoom">
-              <div class="lobby-img">
-                <img class="lobby-user-img" src="images/01.png" />
+              <div className="lobby-img">
+                <img className="lobby-user-img" src={socket.img} />
               </div>
-              <form id="roomCreateForm" action="">
+              <form id="roomCreateForm" onSubmit={submitHandler}>
                 <input
-                  class="lobby-room-name"
+                  className="lobby-room-name"
                   id="createRoomTitle"
-                  autocomplete="off"
+                  autoComplete="off"
                   placeholder="방 이름"
+                  ref={roomNameRef}
                 />
 
                 <input
-                  class="lobby-room-name"
+                  className="lobby-room-name"
                   id="createRoomLimit"
-                  autocomplete="off"
+                  autoComplete="off"
                   placeholder="방 인원 수 제한"
+                  ref={limitRef}
                 />
-                <p class="lobby-create-exp">*0명 입력시 무제한 입장</p>
+                <p className="lobby-create-exp">*0명 입력시 무제한 입장</p>
 
                 <p>
                   방 공개 여부:
@@ -63,28 +141,35 @@ const LobbyPage = () => {
                     id="isSecret_N"
                     name="isSecret"
                     value="N"
-                    checked
+                    defaultChecked
+                    onChange={isSecretChangeHandler}
                   />
-                  <label for="isSecret_N">공개</label>
+                  <label htmlFor="isSecret_N">공개</label>
                   <input
                     type="radio"
                     id="isSecret_Y"
                     name="isSecret"
                     value="Y"
+                    onChange={isSecretChangeHandler}
                   />
-                  <label for="isSecret_Y">비공개</label>
+                  <label htmlFor="isSecret_Y">비공개</label>
                 </p>
 
-                <p id="secretCodeArea" class="d-none">
-                  <input
-                    class="lobby-room-name"
-                    id="createSecretCode"
-                    autocomplete="off"
-                    placeholder="비밀방 코드"
-                  />
-                </p>
+                {isSecret === "Y" && (
+                  <p id="secretCodeArea" className="d-none">
+                    <input
+                      className="lobby-room-name"
+                      id="createSecretCode"
+                      autoComplete="off"
+                      placeholder="비밀방 코드"
+                      ref={secretCodeRef}
+                    />
+                  </p>
+                )}
 
-                <button class="lobby-create-btn">create</button>
+                <button className="lobby-create-btn" type="submit">
+                  create
+                </button>
               </form>
             </div>
           </div>
