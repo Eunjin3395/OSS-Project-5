@@ -54,18 +54,20 @@ export default function LoginPage() {
   // 사용자의 위치도 업데이트
   socket.on("login-result", (resultData) => {
     socket.nickname = resultData.name;
-  
+
     // jitsiAPI에 img url 전달하기 위함.
-    if(resultData.img.includes('/static/media')){  // user가 우리가 제공하는 avatar 고른 경우
-      socket.img="http://localhost:3000"+resultData.img // 서버 배포 시 localhost가 아닌 배포 주소로 바꿔야함
-    }else{ // user가 구글로그인으로 img 불러온 경우
-      socket.img=resultData.img; 
+    if (resultData.img.includes("/static/media")) {
+      // user가 우리가 제공하는 avatar 고른 경우
+      socket.img = "http://localhost:3000" + resultData.img; // 서버 배포 시 localhost가 아닌 배포 주소로 바꿔야함
+    } else {
+      // user가 구글로그인으로 img 불러온 경우
+      socket.img = resultData.img;
     }
 
     console.log(resultData);
     if (resultData.result) {
       socket.currentArea = "lobby";
-      return Navigate("/chat"); // 로비 만들어지면 수정할 것.
+      return Navigate("/lobby"); // 로비 만들어지면 수정할 것.
     } else console.log(resultData.msg);
   });
 
@@ -90,33 +92,33 @@ export default function LoginPage() {
   }
 
   return (
-    <div className='LoginPage-Container'>
-      <div className='Container'>
+    <div className="LoginPage-Container">
+      <div className="Container">
         <div>Login</div>
-        <img src={userImg} onClick={ImgChanger} className='loginImg' />
-        <form onSubmit={SubmitHandler} className='Login-form'>
+        <img src={userImg} onClick={ImgChanger} className="loginImg" />
+        <form onSubmit={SubmitHandler} className="Login-form">
           <input
-            type='text'
-            className='UserName'
+            type="text"
+            className="UserName"
             value={UserName}
             onChange={UserNameHanler}
-            placeholder='Enter User name'
+            placeholder="Enter User name"
           />
-          <button className='submit' type='submit'>
-            <i class='fa-solid fa-check'></i>
+          <button className="submit" type="submit">
+            <i class="fa-solid fa-check"></i>
           </button>
         </form>
         <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
           <GoogleLogin
-            onSuccess={credentialResponse => {
+            onSuccess={(credentialResponse) => {
               let payload = jwt_decode(credentialResponse.credential);
               socket.emit("login", {
                 nickname: payload.name,
-                img: payload.picture
+                img: payload.picture,
               });
             }}
             onError={() => {
-              console.log('Login Failed');
+              console.log("Login Failed");
             }}
           />
         </GoogleOAuthProvider>
