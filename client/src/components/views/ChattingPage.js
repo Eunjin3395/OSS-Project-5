@@ -137,15 +137,12 @@ export default function ChattingPage() {
   }, [memberCount, room]);
 
   // 유저가 입장, 퇴장 시 채팅방에 이를 공지
-  useEffect(() => {
-    socket.on("notify-message", (msg) => {
-      const message = document.createElement("li");
-      message.className = "notify";
-      message.innerText = msg;
-      console.log(message);
-    });
+  socket.on("notify-message", (msg) => {
+    const message = document.createElement("li");
+    message.className = "notify";
+    message.innerText = msg;
+    console.log(message);
   });
-
   // 전송 버튼을 누르면 실행
   // 메세지를 서버로 전송
   function SendText(event) {
