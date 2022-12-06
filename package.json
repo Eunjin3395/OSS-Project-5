@@ -27,5 +27,10 @@
   "bugs": {
     "url": "https://github.com/Eunjin3395/OSS-Project-5/issues"
   },
-  "homepage": "https://github.com/Eunjin3395/OSS-Project-5#readme"
+  "homepage": "https://github.com/Eunjin3395/OSS-Project-5#readme",
+  "engine": {
+    "npm": "8.5.0",
+    "node": "16.x",
+    "yarn": "1.x"
+  }
 }
