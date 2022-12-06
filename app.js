@@ -148,6 +148,7 @@ io.on("connection", (socket) => {
       console.log(
         `login success, socketID: ${socket.id}, nickname: ${socket.nickname}, img:${resultData.img}`
       );
+      socket.broadcast.emit("rooms-update", rooms);
     } else {
       // 로그인 실패
       resultData.result = false;

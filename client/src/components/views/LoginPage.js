@@ -58,7 +58,10 @@ export default function LoginPage() {
     // jitsiAPI에 img url 전달하기 위함.
     if (resultData.img.includes("/static/media")) {
       // user가 우리가 제공하는 avatar 고른 경우
-      socket.img = "http://localhost:3000" + resultData.img; // 서버 배포 시 localhost가 아닌 배포 주소로 바꿔야함
+      process.env.NODE_ENV === "production"
+        ? (socket.img =
+            "https://tranquil-river-87865.herokuapp.com/" + resultData.img)
+        : (socket.img = "http://localhost:3000" + resultData.img);
     } else {
       // user가 구글로그인으로 img 불러온 경우
       socket.img = resultData.img;
@@ -93,20 +96,20 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="LoginPage-Container">
-      <div className="Container">
+    <div className='LoginPage-Container'>
+      <div className='Container'>
         <div>Login</div>
-        <img src={userImg} onClick={ImgChanger} className="loginImg" />
-        <form onSubmit={SubmitHandler} className="Login-form">
+        <img src={userImg} onClick={ImgChanger} className='loginImg' />
+        <form onSubmit={SubmitHandler} className='Login-form'>
           <input
-            type="text"
-            className="UserName"
+            type='text'
+            className='UserName'
             value={UserName}
             onChange={UserNameHanler}
-            placeholder="Enter User name"
+            placeholder='Enter User name'
           />
-          <button className="submit" type="submit">
-            <i class="fa-solid fa-check"></i>
+          <button className='submit' type='submit'>
+            <i class='fa-solid fa-check'></i>
           </button>
         </form>
         <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
