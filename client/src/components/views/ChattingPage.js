@@ -51,6 +51,7 @@ export default function ChattingPage() {
               startScreenSharing: true,
               enableEmailInStats: false,
               prejoinConfig: { enabled: false },
+              toolbarButtons: ["camera", "microphone"],
             }}
             interfaceConfigOverwrite={{
               DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
@@ -64,7 +65,7 @@ export default function ChattingPage() {
             }
             getIFrameRef={(iframeRef) => {}}
           />
-          <span className='hide'></span>
+          {/* <span className='hide'></span> */}
         </div>
 
         <div className='Chat-Input-Container'>
