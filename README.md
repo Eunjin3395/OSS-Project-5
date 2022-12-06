@@ -2,7 +2,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="" alt="Logo" width="200">
+    <img src="https://github.com/Eunjin3395/OSS-Project-5/blob/main/public/images/01.png" alt="Logo" width="200">
   </a>
 
   <h3 align="center">WEB CHAT</h3>
@@ -49,5 +49,5 @@
  텍스트로만 채팅하면<br>
  상대방의 비언어적 표현을 놓쳐서 오해하는 경우가 많다<br>
  Web chat을 이용해 정확한 의사소통을 해보자<br>
- 
+
  
