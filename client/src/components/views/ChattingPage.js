@@ -9,7 +9,6 @@ export default function ChattingPage() {
   const [userName, setUserName] = useState(socket.nickname);
   const [chatRoom, setChatRoom] = useState("Empty");
   const [memberCount, setMemberCount] = useState("Empty");
-  const [memberList, setMemberList] = useState("Empty");
   let userInput = document.getElementById("User-Input");
   let chat = document.getElementById("chat");
 
@@ -103,14 +102,12 @@ export default function ChattingPage() {
     socket.on("rooms-update", (rooms) => {
       // 우선 채팅방 인원 변동이 생긴건지 파악
       if (socket.currentArea == "chat") {
+        console.log("방에 인원변동");
         let roomname = room.roomname; // 현재 방의 이름
         rooms.forEach((roomlist) => {
           if (roomlist.roomname == roomname) {
             // 현재 방에서 인원 변동이 발생한 경우에만 실행
-            if (
-              memberCount != roomlist.memNum ||
-              memberList != roomlist.memList
-            ) {
+            if (memberCount != roomlist.memNum) {
               // 채팅방 업데이트
               setRoom(roomlist);
             }
@@ -121,28 +118,28 @@ export default function ChattingPage() {
   });
 
   // room의 정보를 업데이트
-  useEffect(() => {
-    if (room == "Empty") setRoom("test"); // 로비가 없어서 입장시 억지로 랜더링 시키기 위해서 만듦. 로비 생성시 필수 제거
-    socket.on("this-room-info", (room) => {
-      setRoom(room);
-    });
+  socket.on("this-room-info", (room) => {
+    setRoom(room);
   });
 
   // 방에 새로 참가하거나 변동 시 현재 입장한 유저의 수를 업데이트
   useEffect(() => {
     if (room != "Empty") {
-      // setMemberCount(`입장 인원 : ${room.memList.length} / ${room.limit}`);
-      setMemberList(room.memList);
+      setMemberCount(`입장 인원 : ${room.memList.length} / ${room.limit}`);
     }
-  }, [memberCount, room]);
+  }, [room]);
 
   // 유저가 입장, 퇴장 시 채팅방에 이를 공지
-  socket.on("notify-message", (msg) => {
-    const message = document.createElement("li");
-    message.className = "notify";
-    message.innerText = msg;
-    console.log(message);
+  useEffect(() => {
+    socket.off("notify-message").on("notify-message", (msg) => {
+      const message = document.createElement("li");
+      message.className = "notify";
+      message.innerText = msg;
+      chat.appendChild(message);
+      console.log(message);
+    });
   });
+
   // 전송 버튼을 누르면 실행
   // 메세지를 서버로 전송
   function SendText(event) {
@@ -209,7 +206,7 @@ export default function ChattingPage() {
   // 로그아웃 시 현재 위치를 로비로 수정
   function LeaveToLoginPage(event) {
     event.preventDefault();
-    socket.emit("room-out");
+    socket.off("room-out").emit("room-out");
     socket.currentArea = "lobby";
     return Navigator("/lobby"); // 로비 만들어지면 수정할 것
   }
