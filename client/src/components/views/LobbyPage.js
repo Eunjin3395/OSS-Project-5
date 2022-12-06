@@ -45,6 +45,10 @@ const LobbyPage = () => {
 
   socket.on("room-create-result", (data) => {
     if (!data) console.log("Failed to create room!");
+    else {
+      socket.emit("room-in", data.roomname);
+      navigate("/chat");
+    }
   });
 
   socket.on("roomList", (data) => {
