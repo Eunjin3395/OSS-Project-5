@@ -302,7 +302,9 @@ io.on("connection", (socket) => {
 });
 
 // static folder 설정
-app.use(express.static(path.join(__dirname, "public")));
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "client/build")));
+} else app.use(express.static(path.join(__dirname, "public")));
 
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 server.listen(PORT, () => console.log(`Listening port on : ${PORT}`));
