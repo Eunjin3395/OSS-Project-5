@@ -75,11 +75,7 @@ io.on("connection", (socket) => {
       roomUpdate(socket.roomname); // 해당 room 삭제
     else {
       // 채팅방에 msg남기고 전체 rooms array update
-      // 로비 페이지 구현 전 테스트용 !!!!!!!!
-      // 로비 페이지 구현 완료 시 삭제하고 아래 주석으로 대체
-      // 현재는 방 구분없이 전체에 메세지 출력
-      io.sockets.emit("notify-message", `${socket.nickname} left this room.`);
-      // io.sockets.in(socket.roomname).emit("notify-message", `${socket.nickname} left this room.`);
+      io.sockets.in(socket.roomname).emit("notify-message", `${socket.nickname} left this room.`);
       roomUpdate();
     }
 
@@ -257,11 +253,7 @@ io.on("connection", (socket) => {
       time: sendTime,
     };
 
-    // 로비 페이지 구현 전 테스트용 !!!!!!!!
-    // 로비 페이지 구현 완료 시 삭제하고 아래 주석으로 대체
-    // 현재는 방 구분없이 전체에 메세지 출력
-    io.sockets.emit("chat-message", data);
-    // io.sockets.in(socket.roomname).emit("chat-message", data);
+    io.sockets.in(socket.roomname).emit("chat-message", data);
 
     console.log(
       `New chat in roomname ${socket.roomname}, ${socket.nickname} says: ${message}`
@@ -280,11 +272,7 @@ io.on("connection", (socket) => {
       roomUpdate(socket.roomname); // 해당 room 삭제
     } else {
       // 채팅방에 msg남기고 join 풀고 전체 rooms array update
-      // 로비 페이지 구현 전 테스트용 !!!!!!!!
-      // 로비 페이지 구현 완료 시 삭제하고 아래 주석으로 대체
-      // 현재는 방 구분없이 전체에 메세지 출력
-      io.sockets.emit("notify-message", `${socket.nickname} left this room.`);
-      // io.sockets.in(socket.roomname).emit("notify-message", `${socket.nickname} left this room.`);
+      io.sockets.in(socket.roomname).emit("notify-message", `${socket.nickname} left this room.`);
 
       console.log("user left room");
       socket.leave(socket.roomname); // socket의 join 풀어줌
