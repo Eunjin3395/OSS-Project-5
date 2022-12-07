@@ -75,7 +75,9 @@ io.on("connection", (socket) => {
       roomUpdate(socket.roomname); // 해당 room 삭제
     else {
       // 채팅방에 msg남기고 전체 rooms array update
-      io.sockets.in(socket.roomname).emit("notify-message", `${socket.nickname} left this room.`);
+      io.sockets
+        .in(socket.roomname)
+        .emit("notify-message", `${socket.nickname} left this room.`);
       roomUpdate();
     }
 
@@ -272,7 +274,9 @@ io.on("connection", (socket) => {
       roomUpdate(socket.roomname); // 해당 room 삭제
     } else {
       // 채팅방에 msg남기고 join 풀고 전체 rooms array update
-      io.sockets.in(socket.roomname).emit("notify-message", `${socket.nickname} left this room.`);
+      io.sockets
+        .in(socket.roomname)
+        .emit("notify-message", `${socket.nickname} left this room.`);
 
       console.log("user left room");
       socket.leave(socket.roomname); // socket의 join 풀어줌

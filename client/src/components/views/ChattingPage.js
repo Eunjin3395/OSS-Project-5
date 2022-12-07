@@ -5,6 +5,7 @@ import socket from "./socket";
 import { JitsiMeeting } from "@jitsi/react-sdk";
 export default function ChattingPage() {
   let Navigator = useNavigate();
+  const img = socket.img;
   const [room, setRoom] = useState("Empty");
   const [userName, setUserName] = useState(socket.nickname);
   const [chatRoom, setChatRoom] = useState("Empty");
@@ -120,6 +121,7 @@ export default function ChattingPage() {
 
   // room의 정보를 업데이트
   socket.on("this-room-info", (room) => {
+    console.log(room);
     setRoom(room);
   });
 
@@ -161,7 +163,7 @@ export default function ChattingPage() {
       //    time: sendTime,
       //  };
       const name = document.createElement("div");
-      name.innerText = back.name;
+      name.innerText = socket.nickname;
       name.className = "chatName";
 
       const time = document.createElement("div");
@@ -173,7 +175,7 @@ export default function ChattingPage() {
       msg.className = "chatMsg";
 
       const avatar = document.createElement("img");
-      avatar.src = back.img;
+      avatar.src = socket.img;
       avatar.className = "chatAvatar";
 
       const chatting = document.createElement("div");
@@ -207,8 +209,9 @@ export default function ChattingPage() {
   // 로그아웃 시 현재 위치를 로비로 수정
   function LeaveToLoginPage(event) {
     event.preventDefault();
-    socket.off("room-out").emit("room-out");
     socket.currentArea = "lobby";
+    socket.emit("room-out");
+    console.log(room);
     return Navigator("/lobby"); // 로비 만들어지면 수정할 것
   }
 
