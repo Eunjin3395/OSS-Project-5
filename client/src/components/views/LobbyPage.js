@@ -8,30 +8,46 @@ const LobbyPage = () => {
 
   const [isSecret, setIsSecret] = useState("N");
   const [roomList, setRoomList] = useState([]);
-
-  useEffect(() => {
-    console.log("방 리스트", roomList);
-  });
-
   const roomNameRef = useRef();
   const secretCodeRef = useRef();
   const limitRef = useRef();
 
+
+
+  //비밀방 설정
+  const isSecretChangeHandler = (e) => {
+    console.log(e.target.value);
+    setIsSecret(e.target.value);
+  };
+
+  
+  // 채팅방 두번 클릭 시 해당 방으로 입장
   const roomDoubleClickHandler = (roomName) => {
     socket.emit("room-in", roomName);
     socket.currentArea = "chat";
     navigate("/chat");
   };
 
-  socket.on("login-result", (data) => {
-    console.log("데이터", data);
+
+  // 로그인-> 로비로 오자마자 active한 room list update
+  socket.on("lobby-setRoomList", (data) => {
+    data.map((room) =>
+      setRoomList([
+        ...roomList,
+        {
+          roomname: room.roomname,
+          isSecret: room.isSecret,
+          secretCode: room.secretCode,
+          limit: room.limit,
+          memNum: room.memNum,
+        },
+      ])
+    );
   });
 
-  const isSecretChangeHandler = (e) => {
-    console.log(e.target.value);
-    setIsSecret(e.target.value);
-  };
+  
 
+  //채팅방 생성 및 입장
   const submitHandler = (e) => {
     e.preventDefault();
     const roomData = {
@@ -40,37 +56,34 @@ const LobbyPage = () => {
       isSecret: isSecret === "Y" ? isSecret : "",
       limit: limitRef.current.value,
     };
-    socket.currentArea = "lobby";
+    // socket.currentArea = "lobby";
     socket.emit("create-room", roomData);
   };
 
+  // 방 생성 결과(방장이 생성 후 바로 입장)
   socket.on("room-create-result", (data) => {
-    if (!data) console.log("Failed to create room!");
+    if (!data.result) console.log(data.msg);
     else {
+      console.log(data.msg);
       socket.emit("room-in", data.roomname);
       socket.currentArea = "chat";
       navigate("/chat");
     }
   });
 
-  socket.on("roomList", (data) => {
-    data.map((room) =>
-      setRoomList([
-        ...roomList,
-        {
-          roomname: room.roomname,
-          isSecret: room.isSecret,
-          limit: room.limit,
-          memNum: room.memNum,
-        },
-      ])
-    );
-  });
 
-  useEffect(() => {
+  
+
+
+
+  // 방에서 로비로 올때 현재 active한 room list update
+  // data={rooms,roomname} -> roomname은 내가 나간 방의 이름
+  useEffect(()=>{
     socket.on("room-out-result", (data) => {
-      console.log("나왔다", data);
-      data.map((room) =>
+      console.log(`=== room out: ${data.roomname}, socket.on(room-out-result) - before setRoomList, data from server ===`);
+      console.log(data.rooms);
+
+      data.rooms.map((room) =>
         setRoomList([
           ...roomList,
           {
@@ -81,14 +94,30 @@ const LobbyPage = () => {
           },
         ])
       );
-    });
-  });
 
-  useEffect(() => {
-    socket.on("rooms-update", (room) => {
-      setRoomList(room);
+      console.log("=== socket.on(room-out-result) - after setRoomList, roomList from client ===");
+      console.log(roomList);
+    });
+  });    
+  
+  
+
+  // 방 리스트에 변동 생겼을 때 현재 active한 room list update
+  useEffect(()=>{
+    socket.on("rooms-update", (rooms) => {
+      if(socket.currentArea=="lobby"){
+        console.log("=== socket.on(rooms-update) - before setRoomList, data from server ===");
+        console.log(rooms);
+
+        setRoomList(rooms);
+
+        console.log("=== socket.on(rooms-update) - after setRoomList, roomList from client ===");
+        console.log(roomList);
+      }
     });
   });
+  
+
   return (
     <div id='lobbyArea' className='d-none'>
       <div className='lobby-top'>
