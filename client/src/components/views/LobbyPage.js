@@ -24,9 +24,17 @@ const LobbyPage = () => {
       alert("방 인원이 초과되었습니다!");
       return 0;
     }
+
+    if (!room.isSecret) {
+      socket.emit("room-in", room.roomname);
+      socket.currentArea = "chat";
+      navigate("/chat");
+      return 0;
+    }
+
     const secretCode = prompt("비밀번호를 입력하세요");
-    if (secretCode === String(room.code)) {
-      socket.emit("room-in", room.roomName);
+    if (secretCode === String(room.secretCode)) {
+      socket.emit("room-in", room.roomname);
       socket.currentArea = "chat";
       navigate("/chat");
     } else {
