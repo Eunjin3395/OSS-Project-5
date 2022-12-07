@@ -19,11 +19,14 @@ const LobbyPage = () => {
   };
 
   // 채팅방 두번 클릭 시 해당 방으로 입장
-  const roomDoubleClickHandler = (roomName, code) => {
-    console.log(code);
+  const roomDoubleClickHandler = (room) => {
+    if (String(room.memNum) === room.limit) {
+      alert("방 인원이 초과되었습니다!");
+      return 0;
+    }
     const secretCode = prompt("비밀번호를 입력하세요");
-    if (secretCode === String(code)) {
-      socket.emit("room-in", roomName);
+    if (secretCode === String(room.code)) {
+      socket.emit("room-in", room.roomName);
       socket.currentArea = "chat";
       navigate("/chat");
     } else {
@@ -134,7 +137,7 @@ const LobbyPage = () => {
                   <div
                     className="lobby-room-chat"
                     onDoubleClick={() => {
-                      roomDoubleClickHandler(room.roomname, room.secretCode);
+                      roomDoubleClickHandler(room);
                     }}
                   >
                     <div className="lobby-room-chat-left">
