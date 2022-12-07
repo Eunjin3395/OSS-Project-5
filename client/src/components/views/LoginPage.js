@@ -70,7 +70,7 @@ export default function LoginPage() {
     console.log(resultData);
     if (resultData.result) {
       socket.currentArea = "lobby";
-      socket.emit("login-result", resultData);
+      // socket.emit("login-result", resultData);
       return Navigate("/lobby"); // 로비 만들어지면 수정할 것.
     } else console.log(resultData.msg);
   });
