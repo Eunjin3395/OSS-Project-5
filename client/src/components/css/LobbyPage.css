@@ -41,6 +41,11 @@
   margin-top: 10px;
   border-bottom: 1px solid rgba(191, 191, 191, 0.423);
 }
+
+.lobby-room-chat:hover {
+  background: rgb(223, 223, 223);
+}
+
 .lobby-chat-name {
   width: 100%;
   font-size: 1.3rem;
