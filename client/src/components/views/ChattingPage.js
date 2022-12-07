@@ -26,24 +26,24 @@ export default function ChattingPage() {
   // Input-Container : 사용자 입력창
 
   let html = (
-    <div id='MainPage-Container'>
-      <script src='https://meet.jit.si/external_api.js'></script>
-      <div id='NabBar'>
-        <div className='ChatRoom-info'>
-          <div id='chatroom'>{chatRoom}</div>
-          <div className='Member-Cnt'>{memberCount}</div>
+    <div id="MainPage-Container">
+      <script src="https://meet.jit.si/external_api.js"></script>
+      <div id="NabBar">
+        <div className="ChatRoom-info">
+          <div id="chatroom">{chatRoom}</div>
+          <div className="Member-Cnt">{memberCount}</div>
         </div>
-        <form onSubmit={LeaveToLoginPage} id='leave'>
-          <button className='ChatRoom-exit'>
-            <i class='fa-solid fa-house'></i>
+        <form onSubmit={LeaveToLoginPage} id="leave">
+          <button className="ChatRoom-exit">
+            <i class="fa-solid fa-house"></i>
           </button>
         </form>
       </div>
-      <div className='Video-Chat-Input-container'>
-        <div id='Video-Interface'>
+      <div className="Video-Chat-Input-container">
+        <div id="Video-Interface">
           <JitsiMeeting
-            className='video'
-            domain='meet.jit.si'
+            className="video"
+            domain="meet.jit.si"
             roomName={chatRoom}
             configOverwrite={{
               startWithAudioMuted: true,
@@ -68,15 +68,15 @@ export default function ChattingPage() {
           {/* <span className='hide'></span> */}
         </div>
 
-        <div className='Chat-Input-Container'>
-          <div id='Chat-Container'>
-            <ul id='chat'></ul>
+        <div className="Chat-Input-Container">
+          <div id="Chat-Container">
+            <ul id="chat"></ul>
           </div>
 
-          <div id='Input-Container'>
-            <input type='text' id='User-Input' />
-            <button id='submit' onClick={SendText}>
-              <i class='fa-solid fa-arrow-up'></i>
+          <div id="Input-Container">
+            <input type="text" id="User-Input" />
+            <button id="submit" onClick={SendText}>
+              <i class="fa-solid fa-arrow-up"></i>
             </button>
           </div>
         </div>
@@ -131,15 +131,15 @@ export default function ChattingPage() {
   }, [room]);
 
   // 유저가 입장, 퇴장 시 채팅방에 이를 공지
-  useEffect(() => {
-    socket.off("notify-message").on("notify-message", (msg) => {
-      const message = document.createElement("li");
-      message.className = "notify";
-      message.innerText = msg;
-      chat.appendChild(message);
-      console.log(message);
-    });
-  });
+  // useEffect(() => {
+  //   socket.off("notify-message").on("notify-message", (msg) => {
+  //     const message = document.createElement("li");
+  //     message.className = "notify";
+  //     message.innerText = msg;
+  //     chat.appendChild(message);
+  //     console.log(message);
+  //   });
+  // });
 
   // 전송 버튼을 누르면 실행
   // 메세지를 서버로 전송
