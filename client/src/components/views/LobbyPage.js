@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import "../css/LobbyPage.css";
 import socket from "./socket";
 
@@ -150,7 +151,11 @@ const LobbyPage = () => {
                   >
                     <div className="lobby-room-chat-left">
                       <div className="lobby-chat-name">
-                        {room.isSecret ? "🔒" : "🔓"}
+                        {room.isSecret ? (
+                          <i className="fa-solid fa-lock" />
+                        ) : (
+                          <i className="fa-solid fa-unlock" />
+                        )}{" "}
                         {room.roomname}
                       </div>
                       <div className="lobby-chat-latest"></div>
