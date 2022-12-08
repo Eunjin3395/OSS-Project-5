@@ -117,12 +117,15 @@ OSS-Project-5 터미널에서 app.js를 실행합니다.
 <br><br>
 
  # Roadmap
+ 
+ <img src="https://github.com/Eunjin3395/OSS-Project-5/blob/main/public/images/Loadmap.png">
+ <br><br>
 
 - LoginPage, LobbyPage, ChatPage 3가지 페이지로 구성
-- 구글 oauth2.0 를 이용한 로그인 서비스 구현
+- <a href="https://developers.google.com/identity/protocols/oauth2">구글 OAuth 2.0</a>을 이용한 로그인 서비스 구현
 - 채팅 목록을 나타내주고 방 생성 및 채팅방 입장의 기능을 하는 로비 서비스 구현
 - LobbyPage에 비밀방 기능 추가 구현
-- 외부 API(Jitsi Meet)를 이용한 화상채팅 기능 및 로그인 정보 가져오기 기능 구현
+- <a href="https://jitsi.github.io/handbook/docs/dev-guide/dev-guide-iframe/">외부 API(Jitsi Meet)</a>를 이용한 화상채팅 기능 및 로그인 정보 가져오기 기능 구현
 - Web socket을 통한 실시간 방 리스트 및 방 인원수 업데이트 기능 구현
 - Web socket을 통한 실시간 채팅 기능 구현
 - Heroku를 통해 배포
