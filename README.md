@@ -2,7 +2,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="https://github.com/Eunjin3395/OSS-Project-5/blob/main/public/images/01.png" alt="Logo" width="200">
+    <img src="https://github.com/Eunjin3395/OSS-Project-5/blob/main/public/images/04.png" alt="Logo" width="200">
   </a>
 
   <h3 align="center">WEB CHAT</h3>
@@ -98,13 +98,15 @@ OSS-Project-5 터미널에서 app.js를 실행합니다.
 
 > ## LoginPage
 
-<img src="https://github.com/Eunjin3395/OSS-Project-5/blob/main/public/images/Loginpage.png">
+<div align="center">
+  <img src="https://github.com/Eunjin3395/OSS-Project-5/blob/main/public/images/Loginpage.png" width="400">
+</div> 
 
 <br><br>
 
 > ## LobbyPage
 
-<img src="https://github.com/Eunjin3395/OSS-Project-5/blob/main/public/images/Lobbypage.png">
+<img src="https://github.com/Eunjin3395/OSS-Project-5/blob/main/public/images/LobbyPage.png">
 
 <br><br>
 
