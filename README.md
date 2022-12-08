@@ -21,23 +21,6 @@
   </p>
 </div>
 
-<!-- TABLE OF CONTENTS -->
-
-<details>
-  <summary>Table of Contents</summary>
-  
-  <ol>
-    <li><a href="#about-the-project">About The Project</a></li>
-    <li><a href="#getting-started">Getting Started</a></li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ol>
-  
-</details>
-
-
 # About the Project
 
 <br>
@@ -90,27 +73,6 @@ app.js를 실행합니다.
     node app.js
 이제 Chrome browser에서 http://localhost:3000/ 으로 접속해 테스트할 수 있습니다. -->
 
-
-# Usage
-
-
-> ## LoginPage
-
-<img src="https://github.com/Eunjin3395/OSS-Project-5/blob/main/public/images/LoginPage.png">
-
-<br><br>
-
-> ## LobbyPage
-
-<img src="https://github.com/Eunjin3395/OSS-Project-5/blob/main/public/images/LobbyPage.png">
-
-<br><br>
-
-> ## ChatPage
-
-<img src="https://github.com/Eunjin3395/OSS-Project-5/blob/main/public/images/ChatPage.png">
-
-<br><br>
 
  # Roadmap
 
