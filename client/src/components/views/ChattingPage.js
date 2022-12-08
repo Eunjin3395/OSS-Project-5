@@ -164,7 +164,7 @@ export default function ChattingPage() {
       //    time: sendTime,
       //  };
       const name = document.createElement("div");
-      name.innerText = back.nickname;
+      name.innerText = back.name;
       name.className = "chatName";
 
       const time = document.createElement("div");
