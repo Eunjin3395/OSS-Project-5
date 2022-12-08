@@ -62,7 +62,7 @@
 
  1. Git clone
  2. Dependent modules 설치
- 3. API Key 발급 & 입력
+ 3. 실행
 
 <hr>
 
@@ -119,7 +119,7 @@ OSS-Project-5 터미널에서 app.js를 실행합니다.
  # Roadmap
 
 - LoginPage, LobbyPage, ChatPage 3가지 페이지로 구성
-- 구글 API를 이용한 로그인 서비스 구현
+- 구글 oauth2.0 를 이용한 로그인 서비스 구현
 - 채팅 목록을 나타내주고 방 생성 및 채팅방 입장의 기능을 하는 로비 서비스 구현
 - LobbyPage에 비밀방 기능 추가 구현
 - 외부 API(Jitsi Meet)를 이용한 화상채팅 기능 및 로그인 정보 가져오기 기능 구현
