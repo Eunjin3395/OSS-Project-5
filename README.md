@@ -108,4 +108,4 @@ Pull request는 가능한 빠른 시일 내에 확인하도록 하겠습니다.<
 - **김은진** - jennyeunjin@khu.ac.kr
 - **황유환** - yuhwan9819@khu.ac.kr
 - **전민철** - 2019102224@khu.ac.kr
-- **임재영** - (e-mail)
+- **임재영** - ljy7223@khu.ac.kr
