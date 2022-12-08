@@ -158,13 +158,13 @@ export default function ChattingPage() {
   useEffect(() => {
     socket.off("chat-message").on("chat-message", (back) => {
       //  back = {
-      //    name: socket.nickname,
-      //    img: socket.img,
+      //    name: back.nickname,
+      //    img: back.img,
       //    msg: message,
       //    time: sendTime,
       //  };
       const name = document.createElement("div");
-      name.innerText = socket.nickname;
+      name.innerText = back.nickname;
       name.className = "chatName";
 
       const time = document.createElement("div");
@@ -176,7 +176,7 @@ export default function ChattingPage() {
       msg.className = "chatMsg";
 
       const avatar = document.createElement("img");
-      avatar.src = socket.img;
+      avatar.src = back.img;
       avatar.className = "chatAvatar";
 
       const chatting = document.createElement("div");
