@@ -27,25 +27,25 @@ export default function ChattingPage() {
   // Input-Container : 사용자 입력창
 
   let html = (
-    <div id="MainPage-Container">
-      <script src="https://meet.jit.si/external_api.js"></script>
-      <div id="NabBar">
-        <div className="ChatRoom-info">
-          <div id="chatroom">{chatRoom}</div>
-          <div className="Member-Cnt">{memberCount}</div>
+    <div id='MainPage-Container'>
+      <script src='https://meet.jit.si/external_api.js'></script>
+      <div id='NabBar'>
+        <div className='ChatRoom-info'>
+          <div id='chatroom'>{chatRoom}</div>
+          <div className='Member-Cnt'>{memberCount}</div>
         </div>
-        <form onSubmit={LeaveToLoginPage} id="leave">
-          <button className="ChatRoom-exit">
-            <i class="fa-solid fa-house"></i>
+        <form onSubmit={LeaveToLoginPage} id='leave'>
+          <button className='ChatRoom-exit'>
+            <i class='fa-solid fa-house'></i>
           </button>
         </form>
       </div>
-      <div className="Video-Chat-Input-container">
-        <div id="Video-Interface">
+      <div className='Video-Chat-Input-container'>
+        <div id='Video-Interface'>
           {chatRoom != "Empty" && (
             <JitsiMeeting
-              className="video"
-              domain="meet.jit.si"
+              className='video'
+              domain='meet.jit.si'
               roomName={chatRoom}
               configOverwrite={{
                 startWithAudioMuted: true,
@@ -70,15 +70,15 @@ export default function ChattingPage() {
           )}
         </div>
 
-        <div className="Chat-Input-Container">
-          <div id="Chat-Container">
-            <ul id="chat"></ul>
+        <div className='Chat-Input-Container'>
+          <div id='Chat-Container'>
+            <ul id='chat'></ul>
           </div>
 
-          <div id="Input-Container">
-            <input type="text" id="User-Input" />
-            <button id="submit" onClick={SendText}>
-              <i class="fa-solid fa-arrow-up"></i>
+          <div id='Input-Container'>
+            <input type='text' id='User-Input' />
+            <button id='submit' onClick={SendText}>
+              <i class='fa-solid fa-arrow-up'></i>
             </button>
           </div>
         </div>

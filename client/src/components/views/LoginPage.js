@@ -96,23 +96,26 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="LoginPage-Container">
-      <div className="Container">
+    <div className='LoginPage-Container'>
+      <div className='Container'>
         <div>Login</div>
-        <img src={userImg} onClick={ImgChanger} className="loginImg" />
-        <form onSubmit={SubmitHandler} className="Login-form">
+        <img src={userImg} onClick={ImgChanger} className='loginImg' />
+        <form onSubmit={SubmitHandler} className='Login-form'>
           <input
-            type="text"
-            className="UserName"
+            type='text'
+            className='UserName'
             value={UserName}
             onChange={UserNameHanler}
-            placeholder="Enter User name"
+            placeholder='Enter User name'
           />
-          <button className="submit" type="submit">
-            <i class="fa-solid fa-check"></i>
+          <button className='submit' type='submit'>
+            <i class='fa-solid fa-check'></i>
           </button>
         </form>
-        <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+        <GoogleOAuthProvider
+          clientId={
+            "961932954276-udp1i6i7v11rc1ga83o1k1do63577nqq.apps.googleusercontent.com"
+          }>
           <GoogleLogin
             onSuccess={(credentialResponse) => {
               let payload = jwt_decode(credentialResponse.credential);
