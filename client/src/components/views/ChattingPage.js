@@ -157,8 +157,8 @@ export default function ChattingPage() {
   useEffect(() => {
     socket.off("chat-message").on("chat-message", (back) => {
       //  back = {
-      //    name: socket.nickname,
-      //    img: socket.img,
+      //    name: back.nickname,
+      //    img: back.img,
       //    msg: message,
       //    time: sendTime,
       //  };
