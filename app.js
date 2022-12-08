@@ -60,10 +60,8 @@ function roomUpdate(delRoom = "") {
       rooms[i].memNum = io.sockets.adapter.rooms.get(rooms[i].roomname).size;
     }
   }
-  console.log(`rooms array length: ${rooms.length}`)
-  rooms.forEach((room)=> 
-    console.log(room.roomname)
-  )
+  console.log(`rooms array length: ${rooms.length}`);
+  rooms.forEach((room) => console.log(room.roomname));
 }
 
 io.on("connection", (socket) => {
@@ -156,14 +154,14 @@ io.on("connection", (socket) => {
 
       // 로그인 성공 후 로비에서 active한 room list update하기 위해 rooms array 전송
       socket.emit("lobby-setRoomList", rooms);
-      console.log("lobby-setRoomList emitted")
+      console.log("lobby-setRoomList emitted");
+      console.log(rooms);
     } else {
       // 로그인 실패
       resultData.result = false;
       resultData.msg = "Please enter new nickname";
       console.log("login Fail");
       socket.emit("login-result", resultData);
-
     }
   });
 
@@ -242,7 +240,7 @@ io.on("connection", (socket) => {
     // socket.emit("this-room-info",thisRoom) , room은 내 방 객체
     let thisRoom = getRoomByName(socket.roomname);
     socket.emit("this-room-info", thisRoom);
-
+    console.log(`방에 입장했습니다. ${socket.nickname}`);
     // 다른 모든 socket에도 rooms array에 변화 생겼음을 client에게 전송 (특정 방의 인원수가 +1 되었으므로)
     // rooms는 전체 active한 rooms array
     socket.broadcast.emit("rooms-update", rooms);
@@ -281,23 +279,22 @@ io.on("connection", (socket) => {
   socket.on("room-out", () => {
     if (getRoomByName(socket.roomname).memNum == 1) {
       // 내가 이 방의 마지막 남은 1명인데 내가 나가는 경우
-      var data={rooms:rooms,roomname:socket.roomname};
+      var data = { rooms: rooms, roomname: socket.roomname };
       socket.leave(socket.roomname); // socket의 join 풀어줌
       roomUpdate(socket.roomname); // 해당 room 삭제
-      data.rooms=rooms;
-      
+      data.rooms = rooms;
     } else {
       // 채팅방에 msg남기고 join 풀고 전체 rooms array update
       io.sockets
         .in(socket.roomname)
         .emit("notify-message", `${socket.nickname} left this room.`);
-      
-      var data={rooms:rooms,roomname:socket.roomname};
+
+      var data = { rooms: rooms, roomname: socket.roomname };
 
       console.log("user left room");
       socket.leave(socket.roomname); // socket의 join 풀어줌
       roomUpdate();
-      data.rooms=rooms;
+      data.rooms = rooms;
     }
     // chat->lobby로 갈때 client에서 현재 active한 room list update함수 호출하기 위한
     // 데이터인 rooms array를 넘겨줌

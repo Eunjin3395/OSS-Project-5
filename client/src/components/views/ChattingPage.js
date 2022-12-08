@@ -42,31 +42,32 @@ export default function ChattingPage() {
       </div>
       <div className="Video-Chat-Input-container">
         <div id="Video-Interface">
-          <JitsiMeeting
-            className="video"
-            domain="meet.jit.si"
-            roomName={chatRoom}
-            configOverwrite={{
-              startWithAudioMuted: true,
-              disableModeratorIndicator: true,
-              startScreenSharing: true,
-              enableEmailInStats: false,
-              prejoinConfig: { enabled: false },
-              toolbarButtons: ["camera", "microphone"],
-            }}
-            interfaceConfigOverwrite={{
-              DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
-            }}
-            userInfo={{
-              displayName: userName,
-              email: userName + "@gmail.com",
-            }}
-            onApiReady={(externalApi) =>
-              externalApi.executeCommand("avatarUrl", socket.img)
-            }
-            getIFrameRef={(iframeRef) => {}}
-          />
-          {/* <span className='hide'></span> */}
+          {chatRoom != "Empty" && (
+            <JitsiMeeting
+              className="video"
+              domain="meet.jit.si"
+              roomName={chatRoom}
+              configOverwrite={{
+                startWithAudioMuted: true,
+                disableModeratorIndicator: true,
+                startScreenSharing: true,
+                enableEmailInStats: false,
+                prejoinConfig: { enabled: false },
+                toolbarButtons: ["camera", "microphone"],
+              }}
+              interfaceConfigOverwrite={{
+                DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
+              }}
+              userInfo={{
+                displayName: userName,
+                email: userName + "@gmail.com",
+              }}
+              onApiReady={(externalApi) =>
+                externalApi.executeCommand("avatarUrl", socket.img)
+              }
+              getIFrameRef={(iframeRef) => {}}
+            />
+          )}
         </div>
 
         <div className="Chat-Input-Container">
@@ -121,7 +122,7 @@ export default function ChattingPage() {
 
   // room의 정보를 업데이트
   socket.on("this-room-info", (room) => {
-    console.log(room);
+    console.log(`방에 입장했습니다. : ${room.roomname}`);
     setRoom(room);
   });
 
@@ -201,6 +202,7 @@ export default function ChattingPage() {
   // 현재 위치하고 있는 방의 정보를 서버로부터 받은 후 업데이트
   useEffect(() => {
     if (room != "Empty") {
+      console.log(`방이름은 : ${room.roomname}`);
       setChatRoom(room.roomname + " 방");
     }
   }, [room]);
