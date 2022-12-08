@@ -118,7 +118,7 @@ OSS-Project-5 터미널에서 app.js를 실행합니다.
 
  # Roadmap
  
- <img src="https://github.com/Eunjin3395/OSS-Project-5/blob/main/public/images/Loadmap.png">
+ <img src="https://github.com/Eunjin3395/OSS-Project-5/blob/main/public/images/Loadmap.PNG">
  <br><br>
 
 - LoginPage, LobbyPage, ChatPage 3가지 페이지로 구성
