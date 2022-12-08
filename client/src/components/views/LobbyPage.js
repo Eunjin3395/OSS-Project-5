@@ -30,20 +30,29 @@ const LobbyPage = () => {
 
 
   // 로그인-> 로비로 오자마자 active한 room list update
-  socket.on("lobby-setRoomList", (data) => {
-    data.map((room) =>
-      setRoomList([
-        ...roomList,
-        {
-          roomname: room.roomname,
-          isSecret: room.isSecret,
-          secretCode: room.secretCode,
-          limit: room.limit,
-          memNum: room.memNum,
-        },
-      ])
-    );
-  });
+
+  useEffect(()=>{
+    socket.on("lobby-setRoomList", (data) => {
+      console.log("=== on.lobby-setRoomList - before setRoomList, data from server ===");
+      console.log(data);
+      data.map((room) =>
+        setRoomList([
+          ...roomList,
+          {
+            roomname: room.roomname,
+            isSecret: room.isSecret,
+            secretCode: room.secretCode,
+            limit: room.limit,
+            memNum: room.memNum,
+          },
+        ])
+      );
+      console.log("=== on.lobby-setRoomList - after setRoomList, roomList from client ===");
+      console.log(roomList);
+  
+    });
+  })
+  
 
   
 
@@ -60,18 +69,35 @@ const LobbyPage = () => {
     socket.emit("create-room", roomData);
   };
 
+
   // 방 생성 결과(방장이 생성 후 바로 입장)
-  socket.on("room-create-result", (data) => {
-    if (!data.result) console.log(data.msg);
-    else {
-      console.log(data.msg);
-      socket.emit("room-in", data.roomname);
-      socket.currentArea = "chat";
-      navigate("/chat");
-    }
-  });
+  useEffect(()=>{
+    socket.on("room-create-result", (data) => {
+      if (!data.result) console.log(data.msg);
+      else {
+        console.log(data.msg);
+        socket.emit("room-in", data.roomname);
+        socket.currentArea = "chat";
+        navigate("/chat");
+      }
+    });
+  })
+  
 
+// 방 리스트에 변동 생겼을 때 현재 active한 room list update
+  useEffect(()=>{
+    socket.on("rooms-update", (rooms) => {
+      if(socket.currentArea=="lobby"){
+        console.log("=== socket.on(rooms-update) - before setRoomList, data from server ===");
+        console.log(rooms);
 
+        setRoomList(rooms);
+
+        console.log("=== socket.on(rooms-update) - after setRoomList, roomList from client ===");
+        console.log(roomList);
+      }
+    });
+  },[]);
   
 
 
@@ -98,24 +124,11 @@ const LobbyPage = () => {
       console.log("=== socket.on(room-out-result) - after setRoomList, roomList from client ===");
       console.log(roomList);
     });
-  });    
+  },[]);    
   
   
 
-  // 방 리스트에 변동 생겼을 때 현재 active한 room list update
-  useEffect(()=>{
-    socket.on("rooms-update", (rooms) => {
-      if(socket.currentArea=="lobby"){
-        console.log("=== socket.on(rooms-update) - before setRoomList, data from server ===");
-        console.log(rooms);
-
-        setRoomList(rooms);
-
-        console.log("=== socket.on(rooms-update) - after setRoomList, roomList from client ===");
-        console.log(roomList);
-      }
-    });
-  });
+  
   
 
   return (

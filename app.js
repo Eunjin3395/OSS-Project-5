@@ -156,6 +156,7 @@ io.on("connection", (socket) => {
 
       // 로그인 성공 후 로비에서 active한 room list update하기 위해 rooms array 전송
       socket.emit("lobby-setRoomList", rooms);
+      console.log("lobby-setRoomList emitted")
     } else {
       // 로그인 실패
       resultData.result = false;
