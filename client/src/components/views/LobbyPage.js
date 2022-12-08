@@ -71,6 +71,10 @@ const LobbyPage = () => {
   //채팅방 생성 및 입장
   const submitHandler = (e) => {
     e.preventDefault();
+    if(limitRef.current.value>6){
+      alert("가능한 최대 방 인원을 초과하였습니다.");
+      return 0;
+    }
     const roomData = {
       roomname: roomNameRef.current.value,
       secretCode: isSecret === "Y" ? secretCodeRef.current.value : "",
@@ -84,7 +88,10 @@ const LobbyPage = () => {
   // 방 생성 결과(방장이 생성 후 바로 입장)
   useEffect(() => {
     socket.on("room-create-result", (data) => {
-      if (!data.result) console.log(data.msg);
+      if (!data.result){
+        console.log(data.msg);
+        alert(data.msg);
+      } 
       else {
         console.log(data.msg);
         socket.emit("room-in", data.roomname);
@@ -216,7 +223,7 @@ const LobbyPage = () => {
                   placeholder="방 인원 수 제한"
                   ref={limitRef}
                 />
-                <p className="lobby-create-exp">*0명 입력시 무제한 입장</p>
+                <p className="lobby-create-exp">(최대 인원: 6명)</p>
 
                 <p>
                   방 공개 여부:

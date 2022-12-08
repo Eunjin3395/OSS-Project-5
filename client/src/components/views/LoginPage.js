@@ -72,7 +72,7 @@ export default function LoginPage() {
       socket.currentArea = "lobby";
       // socket.emit("login-result", resultData);
       return Navigate("/lobby");
-    } else console.log(resultData.msg);
+    } else alert(resultData.msg);
   });
 
   function ImgChanger(e) {

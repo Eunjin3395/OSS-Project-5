@@ -174,7 +174,7 @@ io.on("connection", (socket) => {
 
     // 현재 rooms array에 같은 이름을 가진 room 존재하는지 체크
     rooms.forEach((room) => {
-      if (room.roomname == data.roomname) {
+      if (room.roomname == data.roomname || room.roomname.toUpperCase()==data.roomname.toUpperCase() ) {
         // rooms array에 해당 roomname을 가진 방 이미 존재할 경우
         console.log("room create failed, same room name", room.roomname);
         socket.emit("room-create-result", {
