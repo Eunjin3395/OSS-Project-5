@@ -21,6 +21,22 @@
   </p>
 </div>
 
+<!-- TABLE OF CONTENTS -->
+
+<details>
+  <summary>Table of Contents</summary>
+  
+  <ol>
+    <li><a href="#about-the-project">About The Project</a></li>
+    <li><a href="#getting-started">Getting Started</a></li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ol>
+  
+</details>
+
 # About the Project
 
 <br>
@@ -31,7 +47,7 @@
  상대방의 비언어적 표현을 놓쳐서 오해하는 경우가 많다<br>
  Web chat을 이용해 정확한 의사소통을 해보자<br>
 
- # Getting Started(Installation)
+ # Getting Started
 <hr>
 
 #### Development Environment
@@ -77,6 +93,26 @@ OSS-Project-5 터미널에서 app.js를 실행합니다.
     npm run start
 이제 Chrome browser에서 http://localhost:3000/ 으로 접속해 테스트할 수 있습니다. -->
 
+# Usage
+
+
+> ## LoginPage
+
+<img src="https://github.com/Eunjin3395/OSS-Project-5/blob/main/public/images/Loginpage.png">
+
+<br><br>
+
+> ## LobbyPage
+
+<img src="https://github.com/Eunjin3395/OSS-Project-5/blob/main/public/images/Lobbypage.png">
+
+<br><br>
+
+> ## ChatPage
+
+<img src="https://github.com/Eunjin3395/OSS-Project-5/blob/main/public/images/Chatpage.png">
+
+<br><br>
 
  # Roadmap
 
@@ -105,7 +141,7 @@ WEB CHAT 프로젝트에 대한 개선 제안이 있다면 아래를 통해 Cont
 
 <br>
 Pull request는 가능한 빠른 시일 내에 확인하도록 하겠습니다.<br>
-기타 문의사항은 📧[Contact](#contact) 으로 메일 부탁드립니다.<br>
+기타 문의사항은 📧<a href="#contact">[Contact]</a>으로 메일 부탁드립니다.<br>
 
 # Contact
 
