@@ -61,16 +61,20 @@ git clone https://github.com/Eunjin3395/OSS-Project-5
 
 #### 2. Dependent modules 설치
  
-VS Code 터미널에서 dependency modules를 설치해줍니다.
+VS Code client 터미널에서 dependency modules를 설치해줍니다.
 
     npm install
 <br>
 
 #### 3. 실행
 
-app.js를 실행합니다.
+OSS-Project-5 터미널에서 app.js를 실행합니다.
 
     node app.js
+    
+다시 client 터미널에서 해당 script를 실행합니다.
+
+    npm run start
 이제 Chrome browser에서 http://localhost:3000/ 으로 접속해 테스트할 수 있습니다. -->
 
 
