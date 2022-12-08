@@ -21,23 +21,6 @@
   </p>
 </div>
 
-<!-- TABLE OF CONTENTS -->
-
-<details>
-  <summary>Table of Contents</summary>
-  
-  <ol>
-    <li><a href="#about-the-project">About The Project</a></li>
-    <li><a href="#getting-started">Getting Started</a></li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ol>
-  
-</details>
-
-
 # About the Project
 
 <br>
@@ -91,27 +74,6 @@ app.js를 실행합니다.
 이제 Chrome browser에서 http://localhost:3000/ 으로 접속해 테스트할 수 있습니다. -->
 
 
-# Usage
-
-
-> ## LoginPage
-
-<img src="https://github.com/Eunjin3395/OSS-Project-5/blob/main/public/images/LoginPage.png">
-
-<br><br>
-
-> ## LobbyPage
-
-<img src="https://github.com/Eunjin3395/OSS-Project-5/blob/main/public/images/LobbyPage.png">
-
-<br><br>
-
-> ## ChatPage
-
-<img src="https://github.com/Eunjin3395/OSS-Project-5/blob/main/public/images/ChatPage.png">
-
-<br><br>
-
  # Roadmap
 
 - LoginPage, LobbyPage, ChatPage 3가지 페이지로 구성
@@ -146,4 +108,4 @@ Pull request는 가능한 빠른 시일 내에 확인하도록 하겠습니다.<
 - **김은진** - jennyeunjin@khu.ac.kr
 - **황유환** - yuhwan9819@khu.ac.kr
 - **전민철** - 2019102224@khu.ac.kr
-- **임재영** - (e-mail)
+- **임재영** - ljy7223@khu.ac.kr
